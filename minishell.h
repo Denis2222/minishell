@@ -24,6 +24,17 @@ typedef struct	s_env
 	struct s_env	*next;
 }					t_env;
 
-void	loadenv(void);
+typedef struct		s_shell
+{
+	t_env			*env;
+}					t_shell;
+
+t_env				*loadenv(void);
+t_shell				*newshell(void);
+char				*envgetkey(t_env *env, char *key);
+char				*getdir(void);
+void				prompt(void);
+int					command(t_shell *shell, char *cmd);
+int					builtin(t_shell *shell, char *cmd);
 
 #endif

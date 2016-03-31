@@ -1,5 +1,10 @@
 SRCS = main.c \
-	   t_env.c
+	   t_env.c \
+	   t_shell.c \
+	   dir.c \
+	   prompt.c \
+	   command.c \
+	   builtin.c
 
 NAME = minishell
 GCC_FLAGS = -Wall -Werror -Wextra

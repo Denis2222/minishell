@@ -23,11 +23,12 @@ t_env	*newenv(char *key, char *value)
 	return (this);
 }
 
-void	addenv(t_env *list, t_env *env)
+t_env	*addenv(t_env **list, t_env *env)
 {
 	t_env *current;
 
-	current = list;
+	ft_printf("addenv");
+	current = *list;
 	if (!current)
 		current = env;
 	while (current->next)
@@ -35,24 +36,47 @@ void	addenv(t_env *list, t_env *env)
 		current = current->next;
 	}
 	current->next = env;
+	return (*list);
 }
 
-void	loadenv(void)
+t_env	*loadenv(void)
 {
 	int	i;
 	char	**tab;
-	t_env	*line;
+	t_env	*new;
 	t_env	*lst;
+	t_env	*current;
 
 	lst = NULL;
 	i = 0;
 	while (environ[i])
 	{
 		tab = ft_strsplit(environ[i], '=');
-		line = newenv(tab[0], tab[1]);
-		addenv(lst, line);
+		new = newenv(tab[0], tab[1]);
+		if (!lst)
+		{
+			lst = new;
+			current = lst;
+		}
+		else
+		{
+			while(lst->next)
+				lst = lst->next;
+			lst->next = new;
+		}
 		i++;
 	}
+	return (current);
+}
 
-	ft_printf("%s", lst->key);
+char	*envgetkey(t_env *env, char *key)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, key) == 0)
+			return (env->value);
+		else
+			env = env->next;
+	}
+	return (NULL);
 }

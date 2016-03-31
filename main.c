@@ -14,42 +14,34 @@
 
 int	main(int ac, char **av)
 {
-//	int		i;
 	char	*line;
-	char	*buf;
 	pid_t	father;
+	t_shell	*shell;
 
-//	i = 0;
-	buf = NULL;
+	shell = newshell();
 	(void)ac;
 	(void)av;
-//	line = NULL;
-//	ft_printf("$> ");
-/*	while (environ[i])
-	{
-		ft_putendl(environ[i]);
-		i++;
-	}
-*/	
-
-	loadenv();
 
 	while (42)
 	{
+		prompt();
 		get_next_line(0, &line);
-		father = fork();
-		if (father > 0)
+		if (!builtin(shell, line))
 		{
-			wait(&father);
-			buf = (char*)malloc(sizeof(char) * 1001);
-			getcwd(buf, 1000);
-			ft_printf("{red}$[%s]> {eoc}", buf);
-			free(buf);
-			buf = NULL;
-		} else if (father == 0)
-		{
-			execve("/bin/ls", ft_strsplit(line, ' '), environ);
-			exit(EXIT_FAILURE);
+			father = fork();
+			if (father > 0)
+			{
+				wait(&father);
+			}
+			else if (father == 0)
+			{
+				if (command(shell, line))
+				{
+					exit(EXIT_FAILURE);
+				}
+				else
+					exit(EXIT_FAILURE);
+			}
 		}
 	}
 }
