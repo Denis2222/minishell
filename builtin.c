@@ -16,5 +16,21 @@ int	builtin(t_shell *shell, char *cmd)
 			ft_printf("cd: %s: %s\n", strerror(errno), cmds[1]);
 		result = 1;
 	}
+	if (ft_strequ(cmds[0], "exit"))
+	{
+		exit(EXIT_SUCCESS);
+	}
+	if (ft_strequ(cmds[0], "setenv"))
+	{
+		result = 1;
+	}
+	if (ft_strequ(cmds[0], "unsetenv"))
+	{
+		result = 1;
+	}
+	if (ft_strequ(cmds[0], "env"))
+	{
+		result = 1;
+	}
 	return (result);
 }
