@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 15:49:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/03/29 17:14:39 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 17:01:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,16 @@ t_env	*newenv(char *key, char *value)
 	this->value = ft_strdup(value);
 	this->next = NULL;
 	return (this);
+}
+
+void	delenv(t_env *this)
+{
+	free(this->key);
+	this->key = NULL;
+	free(this->value);
+	this->value = NULL;
+	this->next = NULL;
+	free(this);
 }
 
 t_env	*addenv(t_env **list, t_env *env)
@@ -79,4 +89,59 @@ char	*envgetkey(t_env *env, char *key)
 			env = env->next;
 	}
 	return (NULL);
+}
+
+void	envsetkey(t_env *env, char *key, char *value)
+{
+	int		keyfound;
+	t_env	*init;
+
+	init = env;
+	keyfound = 0;
+	while (env && !keyfound)
+	{
+		if (ft_strequ(env->key, key))
+		{
+			keyfound = 1;
+			free(env->value);
+			env->value = NULL;
+			env->value = ft_strdup(value);
+		}
+		else
+			env = env->next;
+	}
+	if (!keyfound)
+	{
+		addenv(&init, newenv(key, value));
+	}
+}
+
+void	envdelkey(t_env *env, char *key)
+{
+	int		keyfound;
+	t_env	*tmp;
+
+	keyfound = 0;
+	while (env && !keyfound)
+	{
+		if (ft_strequ(env->key, key))
+		{
+			keyfound = 1;
+			tmp = env;
+			ft_printf("tmpkey:[%s]", tmp->key);
+			//delenv(env);
+			env = tmp;
+		}
+		else
+			env = env->next;
+	}
+}
+
+void	listenv(t_env *env)
+{
+	while (env)
+	{
+		ft_printf("%s=%s\n", env->key, env->value);
+		env = env->next;
+	}
 }
