@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/03/29 17:12:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 13:56:28 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,27 @@ int	main(int ac, char **av)
 	{
 		prompt();
 		get_next_line(0, &line);
-		if (!builtin(shell, line))
+		if (line)
 		{
-			father = fork();
-			if (father > 0)
+			if (!builtin(shell, line))
 			{
-				wait(&father);
-			}
-			else if (father == 0)
-			{
-				if (command(shell, line))
+				father = fork();
+				if (father > 0)
 				{
-					exit(EXIT_FAILURE);
+					wait(&father);
 				}
-				else
-					exit(EXIT_FAILURE);
+				else if (father == 0)
+				{
+					if (command(shell, line))
+					{
+						exit(EXIT_FAILURE);
+					}
+					else
+						exit(EXIT_FAILURE);
+				}
 			}
 		}
+		else
+			exit(EXIT_FAILURE);
 	}
 }

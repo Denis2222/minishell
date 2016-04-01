@@ -28,9 +28,9 @@ int	builtin(t_shell *shell, char *cmd)
 	{
 		result = 1;
 	}
-	if (ft_strequ(cmds[0], "env"))
-	{
-		result = 1;
-	}
+//	if (ft_strequ(cmds[0], "env"))
+//	{
+//		result = 1;
+//	}
 	return (result);
 }
