@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 16:53:07 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 22:05:17 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,8 @@ int	main(int ac, char **av)
 	t_shell	*shell;
 
 	shell = newshell();
-
-	listenv(shell->env);
-	envsetkey(shell->env, "PWD", "Trololo");
-	envsetkey(shell->env, "OMT", "0x01000101010100101010");
-	listenv(shell->env);
-	envdelkey(shell->env, "PWD");
-	listenv(shell->env);
 	(void)ac;
 	(void)av;
-
 	while (42)
 	{
 		prompt();

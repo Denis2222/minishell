@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 16:39:39 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 22:05:46 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,8 @@ void		changedir(t_shell *shell, char *path)
 		else
 			ft_printf("Not file or directory\n");
 	}
+	else if (envgetkey(shell->env, "HOME"))
+		chdir(envgetkey(shell->env, "HOME"));
+	else
+		chdir("/");
 }

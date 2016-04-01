@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 13:41:17 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 16:51:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 22:06:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ t_shell				*newshell(void);
 
 t_env				*loadenv(void);
 char				*envgetkey(t_env *env, char *key);
-void				listenv(t_env *env);
+void				listenv(t_env *list);
 void				envsetkey(t_env *env, char *key, char *value);
-void				envdelkey(t_env *env, char *key);
+void				envdelkey(t_env **list, char *key);
 
 char				*getdir(void);
 void				prompt(void);

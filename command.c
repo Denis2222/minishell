@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/04/01 22:05:54 by dmoureu-          #+#    #+#             */
+/*   Updated: 2016/04/01 22:05:56 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	command(t_shell *shell, char *cmd)
@@ -19,6 +31,7 @@ int	command(t_shell *shell, char *cmd)
 		result = execve(prgtry, cmds, environ);
 		i++;;
 	}
+	result = execve(cmds[0], cmds, environ);
 	if (ft_strcmp(cmd, "") != 0)
 		ft_printf("{red}Command not found !{eoc}\n");
 	return (result);

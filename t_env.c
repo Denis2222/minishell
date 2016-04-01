@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 15:49:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 17:01:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/01 22:06:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_env	*addenv(t_env **list, t_env *env)
 {
 	t_env *current;
 
-	ft_printf("addenv");
 	current = *list;
 	if (!current)
 		current = env;
@@ -111,16 +110,18 @@ void	envsetkey(t_env *env, char *key, char *value)
 			env = env->next;
 	}
 	if (!keyfound)
-	{
 		addenv(&init, newenv(key, value));
-	}
 }
 
-void	envdelkey(t_env *env, char *key)
+void	envdelkey(t_env **list, char *key)
 {
 	int		keyfound;
 	t_env	*tmp;
+	t_env	*env;
+	t_env	*last;
 
+	env = *list;
+	last = NULL;
 	keyfound = 0;
 	while (env && !keyfound)
 	{
@@ -128,12 +129,22 @@ void	envdelkey(t_env *env, char *key)
 		{
 			keyfound = 1;
 			tmp = env;
-			ft_printf("tmpkey:[%s]", tmp->key);
-			//delenv(env);
-			env = tmp;
+			if (last)
+			{
+				last->next = env->next;
+				delenv(tmp);
+			}
+			else
+			{
+				tmp = env;
+				*list = env->next;
+			}
 		}
 		else
+		{
+			last = env;
 			env = env->next;
+		}
 	}
 }
 
