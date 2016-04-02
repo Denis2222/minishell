@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 22:05:46 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/02 19:18:35 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,46 @@ static int	isdir(char *path)
 		return (0);
 }
 
+void		cdcmd(t_shell *shell, char **cmds)
+{
+	(void)shell;
+	if (ft_tablen(cmds) > 2)
+	{
+		ft_printf("cd: Too many arguments\n");
+		return ;
+	}
+	if (cmds[1])
+		changedir(shell, cmds[1]);
+	else if (envgetkey(shell->env, "HOME"))
+		changedir(shell, envgetkey(shell->env, "HOME"));
+	else
+		changedir(shell, "/");
+}
+
 void		changedir(t_shell *shell, char *path)
 {
 	DIR		*directory;
+	char	*newpwd;
 
-	(void)shell;
-	if (path)
+	if (access(path, F_OK) == 0)
 	{
-		if (access(path, F_OK) == 0)
+		if (isdir(path))
 		{
-			if (isdir(path))
+			directory = opendir(path);
+			if (directory)
 			{
-				directory = opendir(path);
-				if (directory)
-					chdir(path);
-				else
-					ft_printf("Permission denied\n");
+				chdir(path);
+				if (envgetkey(shell->env, "PWD"))
+					envsetkey(shell->env, "OLDPWD", envgetkey(shell->env, "PWD"));
+				newpwd = getdir();
+				envsetkey(shell->env, "PWD", newpwd);
 			}
 			else
-				ft_printf("Not a directory\n");
+				ft_printf("Permission denied\n");
 		}
 		else
-			ft_printf("Not file or directory\n");
+			ft_printf("Not a directory\n");
 	}
-	else if (envgetkey(shell->env, "HOME"))
-		chdir(envgetkey(shell->env, "HOME"));
 	else
-		chdir("/");
+		ft_printf("Not file or directory\n");
 }

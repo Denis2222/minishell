@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 15:49:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 22:06:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/02 19:58:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ t_env	*addenv(t_env **list, t_env *env)
 	return (*list);
 }
 
+t_env	*forcepath(void)
+{
+	return (newenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"));
+}
+
 t_env	*loadenv(void)
 {
 	int	i;
@@ -75,6 +80,8 @@ t_env	*loadenv(void)
 		}
 		i++;
 	}
+	if (!environ[0])
+		return (forcepath());
 	return (current);
 }
 
