@@ -15,16 +15,16 @@ OBJDIR = ./objs
 AR = ar -cq
 RM = rm -rf
 OBJS = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
-LIBFT = ./libftprintf/libftprintf.a
+LIBFT = ./libft/libft.a
 
 all: $(NAME)
 
 $(LIBFT):
-	@make -C libftprintf
+	@make -C libft
 	@echo $(SRC_LIB_O)
 
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) -o $(NAME) $(OBJS) -lftprintf -L./libftprintf/ 
+	$(CC) -o $(NAME) $(OBJS) -lft -L./libft/
 
 $(addprefix $(OBJDIR)/, %.o): $(addprefix $(SRCDIR)/, %.c)
 	@mkdir -p $(OBJDIR)
@@ -35,12 +35,11 @@ clean:
 
 fclean: clean
 	@$(RM) $(NAME)
-	@make -C libftprintf fclean
+	@make -C libft fclean
 
 re: fclean all
 
 test: fclean all
 	rm -f test
-	gcc libftprintf.a main.c -o test
+	gcc libft.a main.c -o test
 	./test
-

@@ -13,7 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libftprintf/ft_printf.h"
+# include "libft/libft.h"
 
 extern		char **environ;
 
