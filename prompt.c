@@ -17,6 +17,6 @@ void	prompt(void)
 	char	*buf;
 
 	buf = getdir();
-	ft_printf("{blue}$[%s]> {eoc}", buf);
+	ft_printf("{green}$[%s]> {eoc}", buf);
 	free(buf);
 }

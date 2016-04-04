@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+char *ft_strrepchr(char *str, char c, char n)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			str[i] = n;
+		i++;
+	}
+	return (str);
+}
+
 int	main(int ac, char **av)
 {
 	char	*line;
@@ -25,6 +39,7 @@ int	main(int ac, char **av)
 	{
 		prompt();
 		get_next_line(0, &line);
+		line = ft_strrepchr(line, '\t', ' ');
 		if (line)
 		{
 			if (!builtin(shell, line))
