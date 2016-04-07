@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/02 19:18:35 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/07 22:32:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void		changedir(t_shell *shell, char *path)
 			{
 				chdir(path);
 				if (envgetkey(shell->env, "PWD"))
-					envsetkey(shell->env, "OLDPWD", envgetkey(shell->env, "PWD"));
+					envsetkey(shell->env, "OLDPWD",
+					envgetkey(shell->env, "PWD"));
 				newpwd = getdir();
 				envsetkey(shell->env, "PWD", newpwd);
 			}

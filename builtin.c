@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/02 20:23:37 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/07 22:34:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,11 @@ void	exitcmd(char **cmds)
 		ft_printf("exit: too many arguments\n");
 }
 
-int	builtin(t_shell *shell, char *cmd)
+int		builtin(t_shell *shell, char *cmd)
 {
 	int		result;
 	char	**cmds;
 
-	(void)shell;
 	result = 0;
 	cmds = ft_strsplit(cmd, ' ');
 	if (ft_strequ(cmds[0], "cd"))

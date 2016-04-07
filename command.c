@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 22:05:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/07 22:32:46 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	command(t_shell *shell, char *cmd)
 		prgtry = ft_strjoin(paths[i], "/");
 		prgtry = ft_strjoin(prgtry, cmds[0]);
 		result = execve(prgtry, cmds, environ);
-		i++;;
+		i++;
 	}
 	result = execve(cmds[0], cmds, environ);
 	if (ft_strcmp(cmd, "") != 0)

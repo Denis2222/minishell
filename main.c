@@ -6,35 +6,53 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 22:05:17 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/05 20:04:02 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <signal.h>
 
-char *ft_strrepchr(char *str, char c, char n)
+void	sig_handler(int echo)
 {
-	int	i;
 
-	i = 0;
-	while (str[i])
+	//ft_printf("Signal receive %d \n", echo);
+	
+	if (echo == SIGINT)
 	{
-		if (str[i] == c)
-			str[i] = n;
-		i++;
+		return ;
+		ft_putchar('\n');
+		prompt();
+		//ft_printf("SIGINT");
 	}
-	return (str);
+	if (echo == SIGCHLD)
+	{
+//		kill(3);
+	//	exit(EXIT_SUCCESS);
+		return ;
+	}
 }
 
-int	main(int ac, char **av)
+static void ft_signal(void)
+{
+	int		i;
+
+	i = 0;
+	while (i < 33)
+	{
+		signal(i, sig_handler);
+		i++;
+	}
+}
+
+int	main(void)
 {
 	char	*line;
 	pid_t	father;
 	t_shell	*shell;
 
+	ft_signal();
 	shell = newshell();
-	(void)ac;
-	(void)av;
 	while (42)
 	{
 		prompt();
