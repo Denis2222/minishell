@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/05 20:04:02 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 18:27:56 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,15 @@
 
 void	sig_handler(int echo)
 {
-
-	//ft_printf("Signal receive %d \n", echo);
-	
 	if (echo == SIGINT)
 	{
-		return ;
-		ft_putchar('\n');
-		prompt();
-		//ft_printf("SIGINT");
+		exit(0);
 	}
-	if (echo == SIGCHLD)
+/*	if (echo == SIGCHLD)
 	{
-//		kill(3);
-	//	exit(EXIT_SUCCESS);
 		return ;
-	}
+	}*/
+//	ft_printf("signal:%d\n",echo);
 }
 
 static void ft_signal(void)
@@ -40,7 +33,8 @@ static void ft_signal(void)
 	i = 0;
 	while (i < 33)
 	{
-		signal(i, sig_handler);
+		if (i == SIGINT)
+			signal(i, sig_handler);
 		i++;
 	}
 }
@@ -56,7 +50,11 @@ int	main(void)
 	while (42)
 	{
 		prompt();
-		get_next_line(0, &line);
+		if (!get_next_line(0, &line))
+		{
+			ft_printf("\n");
+			exit(EXIT_SUCCESS);
+		}
 		line = ft_strrepchr(line, '\t', ' ');
 		if (line)
 		{

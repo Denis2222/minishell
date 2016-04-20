@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 15:49:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/07 22:37:05 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 18:01:51 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	delenv(t_env *this)
 
 t_env	*addenv(t_env **list, t_env *env)
 {
-	t_env *current;
+	t_env	*current;
 
 	current = *list;
 	if (!current)
@@ -48,12 +48,39 @@ t_env	*addenv(t_env **list, t_env *env)
 	return (*list);
 }
 
-
-void	listenv(t_env *env)
+int		listenv(t_env *env)
 {
 	while (env)
 	{
 		ft_printf("%s=%s\n", env->key, env->value);
 		env = env->next;
 	}
+	return (1);
+}
+
+char **genenv(t_env *env)
+{
+	char	**envtxt;
+	int		nb;
+	t_env	*c;
+
+	c = env;
+	nb = 0;
+	while (env)
+	{
+		nb++;
+		env = env->next;
+	}
+	envtxt = (char **)malloc(sizeof(char*) * (nb + 1));
+	if (!envtxt)
+		return (NULL);
+	nb = 0;
+	while (c)
+	{
+		envtxt[nb] = ft_strjoin(ft_strjoin(c->key,"="), c->value);
+		c = c->next;
+		nb++;
+	}
+	envtxt[nb] = NULL;
+	return envtxt;
 }

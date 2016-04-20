@@ -3,49 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/07 22:34:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 18:19:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	setenvcmd(t_shell *shell, char **cmds)
+static void	cmdstokeyvalue(char **cmds, char **key, char **value)
 {
-	char *key;
-	char *value;
 	char **tab;
 
-	key = NULL;
-	value = NULL;
 	tab = NULL;
 	if (ft_tablen(cmds) == 3)
 	{
-		key = cmds[1];
-		value = cmds[2];
+		*key = cmds[1];
+		*value = cmds[2];
 	}
 	if (ft_tablen(cmds) == 2 && ft_strchr(cmds[1], '='))
 	{
 		tab = ft_strsplit(cmds[1], '=');
 		if (ft_tablen(tab) == 2)
 		{
-			key = tab[0];
-			value = tab[1];
+			*key = tab[0];
+			*value = tab[1];
 		}
 	}
+}
+
+int			setenvcmd(t_shell *shell, char **cmds)
+{
+	char	*key;
+	char	*value;
+
+	key = NULL;
+	value = NULL;
+	cmdstokeyvalue(cmds, &key, &value);
 	if (key && value)
 		if (ft_strlen(key) > 0 && ft_strlen(value) > 0)
 			if (!ft_strchr(key, '=') && !ft_strchr(value, '='))
 			{
 				envsetkey(shell->env, key, value);
-				return ;
+				shell_env_refresh(shell);
+				return (1);
 			}
-	ft_printf("setenv: syntax error (setenv [KEY] [VALUE] | setenv [KEY]=[VALUE])\n");
+	ft_printf("setenv: syntax error (setenv [KEY] [VALUE] |");
+	ft_printf("setenv [KEY]=[VALUE])\n");
+	return (0);
 }
 
-void	exitcmd(char **cmds)
+int			exitcmd(char **cmds)
 {
 	int	cmdlen;
 	int	len;
@@ -62,39 +71,25 @@ void	exitcmd(char **cmds)
 	}
 	else
 		ft_printf("exit: too many arguments\n");
+	return (1);
 }
 
-int		builtin(t_shell *shell, char *cmd)
+int			builtin(t_shell *shell, char *cmd)
 {
-	int		result;
 	char	**cmds;
 
-	result = 0;
 	cmds = ft_strsplit(cmd, ' ');
 	if (ft_strequ(cmds[0], "cd"))
-	{
-		cdcmd(shell, cmds);
-		result = 1;
-	}
+		return (cdcmd(shell, cmds));
 	if (ft_strequ(cmds[0], "exit"))
-	{
-		result = 1;
-		exitcmd(cmds);
-	}
+		return (exitcmd(cmds));
 	if (ft_strequ(cmds[0], "setenv"))
-	{
-		setenvcmd(shell, cmds);
-		result = 1;
-	}
+		return (setenvcmd(shell, cmds));
 	if (ft_strequ(cmds[0], "unsetenv"))
-	{
-		envdelkey(&shell->env, cmds[1]);
-		result = 1;
-	}
+		return (envdelkey(&shell->env, cmds[1]));
 	if (ft_strequ(cmds[0], "env"))
-	{
-		listenv(shell->env);
-		result = 1;
-	}
-	return (result);
+		return (listenv(shell->env));
+	if (ft_strequ(cmds[0], "fun"))
+		return (fun());
+	return (0);
 }

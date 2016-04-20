@@ -3,23 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   t_env_fct.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/07 22:34:37 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/07 22:37:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 18:23:47 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*forcepath(void)
+int		fun(void)
 {
-	return (newenv("PATH", "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"));
+	int		fd;
+	char	*buffer;
+
+	buffer = NULL;
+	fd = open("./test.c", O_RDONLY);
+	while (get_next_line(fd, &buffer))
+	{
+		ft_printf("%s\n", buffer);
+		free(buffer);
+	}
+	return (1);
+}
+
+char	*forcepath(void)
+{
+	char	*buffer;
+	char	*path;
+	int		fd;
+	int		first;
+	char	*oldpath;
+
+	buffer = NULL;
+	first = 1;
+	fd = open("/etc/paths", O_RDONLY);
+	while (get_next_line(fd, &buffer))
+	{
+		if (!first)
+		{
+			oldpath = path;
+			path = ft_strjoin(path, ":");
+			free(oldpath);
+			path = ft_strjoin(path, buffer);
+		}
+		else
+			path = ft_strdup(buffer);
+		free(buffer);
+		buffer = NULL;
+		first = 0;
+	}
+	return (path);
 }
 
 t_env	*loadenv(void)
 {
-	int	i;
+	int		i;
 	char	**tab;
 	t_env	*new;
 	t_env	*lst;
@@ -30,6 +69,10 @@ t_env	*loadenv(void)
 	while (environ[i])
 	{
 		tab = ft_strsplit(environ[i], '=');
+		if (ft_strequ(tab[0], "SHLVL"))
+		{
+			tab[1] = ft_itoa(ft_atoi(tab[1])+1);
+		}
 		new = newenv(tab[0], tab[1]);
 		if (!lst)
 		{
@@ -38,14 +81,14 @@ t_env	*loadenv(void)
 		}
 		else
 		{
-			while(lst->next)
+			while (lst->next)
 				lst = lst->next;
 			lst->next = new;
 		}
 		i++;
 	}
 	if (!environ[0])
-		return (forcepath());
+		return (newenv("PATH", forcepath()));
 	return (current);
 }
 
@@ -61,7 +104,7 @@ char	*envgetkey(t_env *env, char *key)
 	return (NULL);
 }
 
-void	envsetkey(t_env *env, char *key, char *value)
+int		envsetkey(t_env *env, char *key, char *value)
 {
 	int		keyfound;
 	t_env	*init;
@@ -81,16 +124,35 @@ void	envsetkey(t_env *env, char *key, char *value)
 			env = env->next;
 	}
 	if (!keyfound)
-		addenv(&init, newenv(key, value));
+		init = addenv(&init, newenv(key, value));
+	return (1);
 }
 
-void	envdelkey(t_env **list, char *key)
+void	whileenvdelkey(t_env *env, t_env *last, t_env **list)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	if (last)
+	{
+		last->next = env->next;
+		delenv(tmp);
+	}
+	else
+	{
+		tmp = env;
+		*list = env->next;
+	}
+}
+
+int		envdelkey(t_env **list, char *key)
 {
 	int		keyfound;
-	t_env	*tmp;
 	t_env	*env;
 	t_env	*last;
 
+	if (ft_strequ(key, "PATH"))
+		return (envsetkey(*list, "PATH", forcepath()));
 	env = *list;
 	last = NULL;
 	keyfound = 0;
@@ -99,17 +161,7 @@ void	envdelkey(t_env **list, char *key)
 		if (ft_strequ(env->key, key))
 		{
 			keyfound = 1;
-			tmp = env;
-			if (last)
-			{
-				last->next = env->next;
-				delenv(tmp);
-			}
-			else
-			{
-				tmp = env;
-				*list = env->next;
-			}
+			whileenvdelkey(env, last, list);
 		}
 		else
 		{
@@ -117,5 +169,5 @@ void	envdelkey(t_env **list, char *key)
 			env = env->next;
 		}
 	}
+	return (1);
 }
-

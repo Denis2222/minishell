@@ -1,5 +1,6 @@
 SRCS = main.c \
 	   t_env.c \
+	   t_env_fct.c \
 	   t_shell.c \
 	   dir.c \
 	   prompt.c \
@@ -8,7 +9,7 @@ SRCS = main.c \
 	   cd.c
 
 NAME = minishell
-GCC_FLAGS = -Wall -Werror -Wextra
+GCC_FLAGS = -g  #-Wall -Werror -Wextra
 CC = gcc $(GCC_FLAGS)
 SRCDIR = ./
 OBJDIR = ./objs

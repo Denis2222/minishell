@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/07 22:32:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 17:26:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static int	isdir(char *path)
 		return (0);
 }
 
-void		cdcmd(t_shell *shell, char **cmds)
+int			cdcmd(t_shell *shell, char **cmds)
 {
 	(void)shell;
 	if (ft_tablen(cmds) > 2)
 	{
 		ft_printf("cd: Too many arguments\n");
-		return ;
+		return (1);
 	}
 	if (cmds[1])
 		changedir(shell, cmds[1]);
@@ -39,6 +39,7 @@ void		cdcmd(t_shell *shell, char **cmds)
 		changedir(shell, envgetkey(shell->env, "HOME"));
 	else
 		changedir(shell, "/");
+	return (1);
 }
 
 void		changedir(t_shell *shell, char *path)

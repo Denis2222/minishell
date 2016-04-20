@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:06:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/01 22:06:45 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 15:04:18 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	prompt(void)
 {
 	char	*buf;
+	char	i;
 
+	i = 0;
 	buf = getdir();
-	ft_printf("{green}$[%s]> {eoc}", buf);
+	ft_printf("{red}$[%s]> {eoc}", buf);
 	free(buf);
 }

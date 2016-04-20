@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 13:41:17 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/07 22:37:03 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/18 18:18:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,19 @@ typedef struct		s_env
 typedef struct		s_shell
 {
 	t_env			*env;
+	char			**envtxt;
 }					t_shell;
 
 t_shell				*newshell(void);
+void				shell_env_refresh(t_shell *shell);
 
 t_env				*loadenv(void);
-t_env				*forcepath(void);
+char				*forcepath(void);
 char				*envgetkey(t_env *env, char *key);
-void				listenv(t_env *list);
-void				envsetkey(t_env *env, char *key, char *value);
-void				envdelkey(t_env **list, char *key);
+int					listenv(t_env *list);
+char				**genenv(t_env *list);
+int					envsetkey(t_env *env, char *key, char *value);
+int					envdelkey(t_env **list, char *key);
 t_env				*newenv(char *key, char *value);
 t_env				*addenv(t_env **list, t_env *env);
 void				delenv(t_env *this);
@@ -45,8 +48,9 @@ char				*getdir(void);
 void				prompt(void);
 int					command(t_shell *shell, char *cmd);
 int					builtin(t_shell *shell, char *cmd);
-void				cdcmd(t_shell *shell, char **cmds);
+int					cdcmd(t_shell *shell, char **cmds);
 void				changedir(t_shell *shell, char *dir);
 int					body(void);
+int					fun(void);
 
 #endif
