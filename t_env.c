@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 15:49:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 18:01:51 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/20 13:44:15 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		listenv(t_env *env)
 	return (1);
 }
 
-char **genenv(t_env *env)
+char	**genenv(t_env *env)
 {
 	char	**envtxt;
 	int		nb;
@@ -77,10 +77,10 @@ char **genenv(t_env *env)
 	nb = 0;
 	while (c)
 	{
-		envtxt[nb] = ft_strjoin(ft_strjoin(c->key,"="), c->value);
+		envtxt[nb] = ft_strjoin(ft_strjoin(c->key, "="), c->value);
 		c = c->next;
 		nb++;
 	}
 	envtxt[nb] = NULL;
-	return envtxt;
+	return (envtxt);
 }

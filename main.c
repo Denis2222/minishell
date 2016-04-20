@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 18:27:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/20 14:23:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,9 @@ void	sig_handler(int echo)
 	{
 		exit(0);
 	}
-/*	if (echo == SIGCHLD)
-	{
-		return ;
-	}*/
-//	ft_printf("signal:%d\n",echo);
 }
 
-static void ft_signal(void)
+void	ft_signal(void)
 {
 	int		i;
 
@@ -39,10 +34,27 @@ static void ft_signal(void)
 	}
 }
 
-int	main(void)
+void	treatment(char *line, t_shell *shell)
+{
+	pid_t	father;
+
+	if (!builtin(shell, line))
+	{
+		father = fork();
+		if (father > 0)
+		{
+			wait(&father);
+		}
+		else if (father == 0)
+		{
+			command(shell, line);
+		}
+	}
+}
+
+int		main(void)
 {
 	char	*line;
-	pid_t	father;
 	t_shell	*shell;
 
 	ft_signal();
@@ -57,25 +69,7 @@ int	main(void)
 		}
 		line = ft_strrepchr(line, '\t', ' ');
 		if (line)
-		{
-			if (!builtin(shell, line))
-			{
-				father = fork();
-				if (father > 0)
-				{
-					wait(&father);
-				}
-				else if (father == 0)
-				{
-					if (command(shell, line))
-					{
-						exit(EXIT_FAILURE);
-					}
-					else
-						exit(EXIT_FAILURE);
-				}
-			}
-		}
+			treatment(line, shell);
 		else
 			exit(EXIT_FAILURE);
 	}

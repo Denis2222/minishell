@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 13:41:17 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 18:18:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/20 14:17:08 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_shell				*newshell(void);
 void				shell_env_refresh(t_shell *shell);
 
 t_env				*loadenv(void);
-char				*forcepath(void);
+t_env				*environtoenv(int i);
+char				*getsyspath(void);
 char				*envgetkey(t_env *env, char *key);
 int					listenv(t_env *list);
 char				**genenv(t_env *list);
@@ -51,6 +52,5 @@ int					builtin(t_shell *shell, char *cmd);
 int					cdcmd(t_shell *shell, char **cmds);
 void				changedir(t_shell *shell, char *dir);
 int					body(void);
-int					fun(void);
 
 #endif

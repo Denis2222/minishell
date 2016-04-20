@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 18:19:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/20 13:47:36 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,5 @@ int			builtin(t_shell *shell, char *cmd)
 		return (envdelkey(&shell->env, cmds[1]));
 	if (ft_strequ(cmds[0], "env"))
 		return (listenv(shell->env));
-	if (ft_strequ(cmds[0], "fun"))
-		return (fun());
 	return (0);
 }
