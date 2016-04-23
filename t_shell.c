@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:06:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/23 03:18:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 06:25:27 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,10 @@ t_env	*environtoenv(char **environ, int i)
 {
 	t_env	*env;
 	char	**tab;
-	char	*shlvl;
 
 	tab = ft_strsplit(environ[i], '=');
 	if (ft_strequ(tab[0], "SHLVL"))
 	{
-		free(tab[1]);
 		tab[1] = ft_itoa(ft_atoi(tab[1]) + 1);
 	}
 	env = newenv(tab[0], tab[1]);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 11:33:04 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/23 06:10:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 06:23:37 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,9 @@ void	ft_signal(void)
 void	execcommand(char *line, t_shell *shell)
 {
 	pid_t	father;
-	char	*tmp;
 
 	if (ft_strchr(line, '~'))
-	{
 		line = ft_strrepchrbystr(line, '~', envgetkey(shell->env, "HOME"));
-	}
 	if (!builtin(shell, line))
 	{
 		father = fork();
@@ -58,11 +55,13 @@ void	execcommand(char *line, t_shell *shell)
 	}
 }
 
-int		main(int ac, char **argv, char **environ)
+int		main(int ac, char **av, char **environ)
 {
 	char	*line;
 	t_shell	*shell;
 
+	(void)ac;
+	(void)av;
 	ft_signal();
 	shell = newshell(environ);
 	while (42)
