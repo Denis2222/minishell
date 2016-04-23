@@ -6,13 +6,13 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/07 22:34:37 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/20 14:16:00 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 03:17:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*loadenv(void)
+t_env	*loadenv(char **environ)
 {
 	int		i;
 	t_env	*new;
@@ -23,7 +23,7 @@ t_env	*loadenv(void)
 	i = -1;
 	while (environ[++i])
 	{
-		new = environtoenv(i);
+		new = environtoenv(environ, i);
 		if (!lst)
 		{
 			lst = new;
@@ -50,6 +50,11 @@ char	*envgetkey(t_env *env, char *key)
 		else
 			env = env->next;
 	}
+	if (ft_strequ(key, "HOME") ||
+		ft_strequ(key, "PWD") ||
+		ft_strequ(key, "OLDPWD") ||
+		ft_strequ(key, "PATH"))
+		return ("/");
 	return (NULL);
 }
 

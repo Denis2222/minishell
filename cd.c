@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 17:26:34 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/20 21:00:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	isdir(char *path)
 
 int			cdcmd(t_shell *shell, char **cmds)
 {
-	(void)shell;
 	if (ft_tablen(cmds) > 2)
 	{
 		ft_printf("cd: Too many arguments\n");
@@ -35,10 +34,8 @@ int			cdcmd(t_shell *shell, char **cmds)
 	}
 	if (cmds[1])
 		changedir(shell, cmds[1]);
-	else if (envgetkey(shell->env, "HOME"))
-		changedir(shell, envgetkey(shell->env, "HOME"));
 	else
-		changedir(shell, "/");
+		changedir(shell, envgetkey(shell->env, "HOME"));
 	return (1);
 }
 

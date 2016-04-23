@@ -6,18 +6,18 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:06:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/20 14:16:15 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 03:18:12 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_shell	*newshell(void)
+t_shell	*newshell(char **environ)
 {
 	t_shell	*shell;
 
 	shell = (t_shell*)malloc(sizeof(t_shell));
-	shell->env = loadenv();
+	shell->env = loadenv(environ);
 	shell->envtxt = genenv(shell->env);
 	return (shell);
 }
@@ -65,15 +65,34 @@ char	*getsyspath(void)
 	return (path);
 }
 
-t_env	*environtoenv(int i)
+t_env	*environtoenv(char **environ, int i)
 {
 	t_env	*env;
 	char	**tab;
+	char	*shlvl;
 
 	tab = ft_strsplit(environ[i], '=');
 	if (ft_strequ(tab[0], "SHLVL"))
 	{
+		free(tab[1]);
 		tab[1] = ft_itoa(ft_atoi(tab[1]) + 1);
 	}
-	return (newenv(tab[0], tab[1]));
+	env = newenv(tab[0], tab[1]);
+	free(tab[0]);
+	free(tab[1]);
+	free(tab);
+	return (env);
+}
+
+int		envlen(t_env *env)
+{
+	int nb;
+
+	nb = 0;
+	while (env)
+	{
+		nb++;
+		env = env->next;
+	}
+	return (nb);
 }

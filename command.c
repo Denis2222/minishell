@@ -3,39 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:54 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/18 18:25:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 04:57:39 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	command(t_shell *shell, char *cmd)
+int		command_try_paths(t_shell *shell, char **cmds)
+{
+	char	**paths;
+	char	*prgtry;
+	char	*tmpprgtry;
+	int		i;
+	int		result;
+
+	result = 0;
+	paths = ft_strsplit(envgetkey(shell->env, "PATH"), ':');
+	i = 0;
+	while (paths[i])
+	{
+		tmpprgtry = ft_strjoin(paths[i], "/");
+		prgtry = ft_strjoin(tmpprgtry, cmds[0]);
+		result = execve(prgtry, cmds, shell->envtxt);
+		free(tmpprgtry);
+		free(prgtry);
+		i++;
+	}
+	ft_tabfree(paths);
+	return (result);
+}
+
+int		command(t_shell *shell, char *cmd)
 {
 	int		result;
-	char	**paths;
 	char	**cmds;
-	int		i;
-	char	*prgtry;
 
 	result = 0;
 	cmds = ft_strsplit(cmd, ' ');
-	if (envgetkey(shell->env, "PATH"))
+	if (ft_tablen(cmds) > 0)
 	{
-		paths = ft_strsplit(envgetkey(shell->env, "PATH"), ':');
-		i = 0;
-		while (paths[i])
+		if (envgetkey(shell->env, "PATH"))
 		{
-			prgtry = ft_strjoin(paths[i], "/");
-			prgtry = ft_strjoin(prgtry, cmds[0]);
-			result = execve(prgtry, cmds, shell->envtxt);
-			i++;
+			result = command_try_paths(shell, cmds);
 		}
+		result = execve(cmds[0], cmds, shell->envtxt);
+		if (ft_strcmp(cmd, "") != 0 || result != 0)
+			ft_printf("{red}Command not found !{eoc}\n");
 	}
-	result = execve(cmds[0], cmds, shell->envtxt);
-	if (ft_strcmp(cmd, "") != 0 || result != 0)
-		ft_printf("{red}Command not found !{eoc}\n");
+	ft_tabfree(cmds);
+	free(cmd);
 	return (result);
 }
