@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/20 21:00:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 05:32:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void		changedir(t_shell *shell, char *path)
 			if (directory)
 			{
 				chdir(path);
-				if (envgetkey(shell->env, "PWD"))
-					envsetkey(shell->env, "OLDPWD",
-					envgetkey(shell->env, "PWD"));
+				envsetkey(shell->env, "OLDPWD", envgetkey(shell->env, "PWD"));
 				newpwd = getdir();
 				envsetkey(shell->env, "PWD", newpwd);
+				closedir(directory);
+				ft_strdel(&newpwd);
 			}
 			else
 				ft_printf("Permission denied\n");

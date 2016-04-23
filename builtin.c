@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 22:05:31 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/23 04:58:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/04/23 05:48:27 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,20 @@ int			exitcmd(char **cmds)
 int			builtin(t_shell *shell, char *cmd)
 {
 	char	**cmds;
+	int		ret;
 
+	ret = 0;
 	cmds = ft_strsplit(cmd, ' ');
 	if (ft_strequ(cmds[0], "cd"))
-		return (cdcmd(shell, cmds));
+		ret = cdcmd(shell, cmds);
 	if (ft_strequ(cmds[0], "exit"))
-		return (exitcmd(cmds));
+		ret = exitcmd(cmds);
 	if (ft_strequ(cmds[0], "setenv"))
-		return (setenvcmd(shell, cmds));
+		ret = setenvcmd(shell, cmds);
 	if (ft_strequ(cmds[0], "unsetenv"))
-		return (envdelkey(&shell->env, cmds[1]));
+		ret = envdelkey(&shell->env, cmds[1]);
 	if (ft_strequ(cmds[0], "env"))
-		return (listenv(shell->env));
+		ret = listenv(shell->env);
 	ft_tabfree(cmds);
-	return (0);
+	return (ret);
 }
