@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/01 14:47:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2016/04/23 05:32:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2016/05/26 17:42:39 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	isdir(char *path)
 {
 	struct stat	filestat;
 
-	lstat(path, &filestat);
+	stat(path, &filestat);
 	if ((filestat.st_mode & S_IFMT) == S_IFDIR)
 		return (1);
 	else
